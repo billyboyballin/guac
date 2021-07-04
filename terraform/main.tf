@@ -75,8 +75,8 @@ resource "aws_security_group" "allow_app" {
 
   ingress {
     description = "APP Access"
-    from_port   = 9000
-    to_port     = 9000
+    from_port   = 8443
+    to_port     = 8443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -116,7 +116,7 @@ resource "aws_instance" "public_ec2" {
   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_app.id]
   key_name               = var.ssh_key_name
   subnet_id              = aws_subnet.public.id
-
+  user_data = file("./userdata.sh")
   root_block_device {
     volume_size = 50
   }
